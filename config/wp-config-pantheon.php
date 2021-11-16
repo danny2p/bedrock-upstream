@@ -2,6 +2,7 @@
 /**
  * Set root path
  */
+use Roots\WPConfig\Config;
 $rootPath = realpath( __DIR__ . '/..' );
 
 /**
