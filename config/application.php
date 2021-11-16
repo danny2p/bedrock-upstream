@@ -51,6 +51,7 @@ if (file_exists(dirname(__FILE__) . '/wp-config-pantheon.php') && isset($_ENV['P
 	Config::define('NONCE_SALT',       'put your unique phrase here');
 }
 
+$table_prefix = 'wp_';
 
 
 
