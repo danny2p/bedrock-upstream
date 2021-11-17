@@ -3,6 +3,12 @@
  * Set root path
  */
 use Roots\WPConfig\Config;
+$rootPath = realpath( __DIR__ . '/..' );
+
+/**
+ * Include the Composer autoload
+ */
+require_once( $rootPath . '/vendor/autoload.php' );
 
 /**
  * Pantheon platform settings.
@@ -104,32 +110,6 @@ if (getenv('WP_ENVIRONMENT_TYPE') === false) {
     }
 }
 
-/**
- * Custom Settings
- */
-Config::define('AUTOMATIC_UPDATER_DISABLED', true);
-Config::define('DISABLE_WP_CRON', getenv('DISABLE_WP_CRON') ?: false);
-// Disable the plugin and theme file editor in the admin
-Config::define('DISALLOW_FILE_EDIT', true);
-// Disable plugin and theme updates and installation from the admin
-Config::define('DISALLOW_FILE_MODS', true);
-// Limit the number of post revisions that Wordpress stores (true (default WP): store every revision)
-Config::define('WP_POST_REVISIONS', getenv('WP_POST_REVISIONS') ?: true);
-
-/**
- * URLs
- */
-Config::define('WP_HOME', getenv('WP_HOME'));
-Config::define('WP_SITEURL', getenv('WP_SITEURL'));
-
-
-/**
- * Allow WordPress to detect HTTPS when used behind a reverse proxy or a load balancer
- * See https://codex.wordpress.org/Function_Reference/is_ssl#Notes
- */
-if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
-    $_SERVER['HTTPS'] = 'on';
-}
 /**
  * Force SSL
  */
