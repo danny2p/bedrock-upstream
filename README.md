@@ -32,6 +32,12 @@
   <a href="https://roots.io">Official Website</a> | <a href="https://roots.io/docs/bedrock/master/installation/">Documentation</a> | <a href="CHANGELOG.md">Change Log</a>
 </p>
 
+## Pantheon upstream for Bedrock using Integrated Composer
+
+This upstream is largely standard bedrock with the exception of config structure.  Instead of using dotenv, a wp-config-pantheon.yml file (in the config folder alongside application.php) defines most credentials based on Pantheon's environmental variables.
+
+Upstream-specific structural changes include the separation of composer.json (adding upstream-config/composer.json) as well as pantheon.upstream.yml.
+
 ## Supporting
 
 **Bedrock** is an open source project and completely free to use.
