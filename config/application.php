@@ -26,21 +26,10 @@ $root_dir = dirname(__DIR__);
 $webroot_dir = $root_dir . '/web';
 
 /**
- * Use Dotenv to set required environment variables and load .env file in root
- * .env.local will override .env if it exists
+ * No dotenv variables. Pantheon's wp-config-pantheon.php instead
+ * 
  */
-$env_files = file_exists($root_dir . '/.env.local')
-    ? ['.env', '.env.local']
-    : ['.env'];
 
-$dotenv = Dotenv\Dotenv::createUnsafeImmutable($root_dir, $env_files, false);
-if (file_exists($root_dir . '/.env')) {
-    $dotenv->load();
-    $dotenv->required(['WP_HOME', 'WP_SITEURL']);
-    if (!env('DATABASE_URL')) {
-        $dotenv->required(['DB_NAME', 'DB_USER', 'DB_PASSWORD']);
-    }
-}
 
 /**
  * Set up our global environment constant and load its config first
