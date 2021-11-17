@@ -12,50 +12,6 @@ use Roots\WPConfig\Config;
 use function Env\env;
 
 /**
- * Pantheon platform settings. Everything you need should already be set.
- */
-if (file_exists(dirname(__FILE__) . '/wp-config-pantheon.php') && isset($_ENV['PANTHEON_ENVIRONMENT'])) {
-	require_once(dirname(__FILE__) . '/wp-config-pantheon.php');
-
-/**
- * Local configuration information.
- *
- * If you are working in a local/desktop development environment and want to
- * keep your config separate, we recommend using a 'wp-config-local.php' file,
- * which you should also make sure you .gitignore.
- */
-} elseif (file_exists(dirname(__FILE__) . '/wp-config-local.php') && !isset($_ENV['PANTHEON_ENVIRONMENT'])){
-	# IMPORTANT: ensure your local config does not include wp-settings.php
-	require_once(dirname(__FILE__) . '/wp-config-local.php');
-
-/**
- * This block will be executed if you are NOT running on Pantheon and have NO
- * wp-config-local.php. Insert alternate config here if necessary.
- *
- * If you are only running on Pantheon, you can ignore this block.
- */
-} else {
-	Config::define('DB_NAME',          'database_name');
-	Config::define('DB_USER',          'database_username');
-	Config::define('DB_PASSWORD',      'database_password');
-	Config::define('DB_HOST',          'database_host');
-	Config::define('DB_CHARSET',       'utf8');
-	Config::define('DB_COLLATE',       '');
-	Config::define('AUTH_KEY',         'put your unique phrase here');
-	Config::define('SECURE_AUTH_KEY',  'put your unique phrase here');
-	Config::define('LOGGED_IN_KEY',    'put your unique phrase here');
-	Config::define('NONCE_KEY',        'put your unique phrase here');
-	Config::define('AUTH_SALT',        'put your unique phrase here');
-	Config::define('SECURE_AUTH_SALT', 'put your unique phrase here');
-	Config::define('LOGGED_IN_SALT',   'put your unique phrase here');
-	Config::define('NONCE_SALT',       'put your unique phrase here');
-}
-
-$table_prefix = 'wp_';
-
-
-
-/**
  * Directory containing all of the site's files
  *
  * @var string
@@ -93,11 +49,49 @@ if (file_exists($root_dir . '/.env')) {
 define('WP_ENV', env('WP_ENV') ?: 'production');
 
 /**
+ * URLs
+ */
+Config::define('WP_HOME', env('WP_HOME'));
+Config::define('WP_SITEURL', env('WP_SITEURL'));
+
+/**
  * Custom Content Directory
  */
 Config::define('CONTENT_DIR', '/app');
 Config::define('WP_CONTENT_DIR', $webroot_dir . Config::get('CONTENT_DIR'));
 Config::define('WP_CONTENT_URL', Config::get('WP_HOME') . Config::get('CONTENT_DIR'));
+
+/**
+ * DB settings
+ */
+Config::define('DB_NAME', env('DB_NAME'));
+Config::define('DB_USER', env('DB_USER'));
+Config::define('DB_PASSWORD', env('DB_PASSWORD'));
+Config::define('DB_HOST', env('DB_HOST') ?: 'localhost');
+Config::define('DB_CHARSET', 'utf8mb4');
+Config::define('DB_COLLATE', '');
+$table_prefix = env('DB_PREFIX') ?: 'wp_';
+
+if (env('DATABASE_URL')) {
+    $dsn = (object) parse_url(env('DATABASE_URL'));
+
+    Config::define('DB_NAME', substr($dsn->path, 1));
+    Config::define('DB_USER', $dsn->user);
+    Config::define('DB_PASSWORD', isset($dsn->pass) ? $dsn->pass : null);
+    Config::define('DB_HOST', isset($dsn->port) ? "{$dsn->host}:{$dsn->port}" : $dsn->host);
+}
+
+/**
+ * Authentication Unique Keys and Salts
+ */
+Config::define('AUTH_KEY', env('AUTH_KEY'));
+Config::define('SECURE_AUTH_KEY', env('SECURE_AUTH_KEY'));
+Config::define('LOGGED_IN_KEY', env('LOGGED_IN_KEY'));
+Config::define('NONCE_KEY', env('NONCE_KEY'));
+Config::define('AUTH_SALT', env('AUTH_SALT'));
+Config::define('SECURE_AUTH_SALT', env('SECURE_AUTH_SALT'));
+Config::define('LOGGED_IN_SALT', env('LOGGED_IN_SALT'));
+Config::define('NONCE_SALT', env('NONCE_SALT'));
 
 /**
  * Custom Settings
