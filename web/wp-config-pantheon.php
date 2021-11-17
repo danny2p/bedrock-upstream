@@ -3,12 +3,6 @@
  * Set root path
  */
 use Roots\WPConfig\Config;
-$rootPath = realpath( __DIR__ . '/..' );
-
-/**
- * Include the Composer autoload
- */
-require_once( $rootPath . '/vendor/autoload.php' );
 
 /**
  * Pantheon platform settings.
